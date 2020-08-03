@@ -81,7 +81,7 @@ PLATFORMS
 DEPENDENCIES
   jekyll (~> 4.0.0)
   jekyll-archives
-  jekyll-feed (~> 0.12)
+  jekyll-feed
   jekyll-paginate
   jekyll-sitemap
   jekyll-whiteglass
