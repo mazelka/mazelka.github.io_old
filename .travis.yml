@@ -1,7 +1,7 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.7.1
+  - 3.0.2
 addons:
   apt:
     packages:
@@ -19,16 +19,18 @@ script:
   - html5validator --Werror --also-check-css --also-check-svg --root _site/
   - |
     (bundle exec jekyll server -d _tmp_site & echo $! >&3) 3>jekyll.pid | grep -q 'Server running' && \
-    pa11y-ci --sitemap http://localhost:4000/whiteglass/sitemap.xml && \
+    pa11y-ci --sitemap 'http://localhost:4000/whiteglass/sitemap.xml' \
+      --sitemap-find 'https://yous.github.io/whiteglass' --sitemap-replace 'http://localhost:4000/whiteglass' && \
     kill -9 "$(cat jekyll.pid)" && \
-    rm -f jekyll.pid
+    rm -f jekyll.pid && \
+    rm -rf _tmp_site
 branches:
   only:
     - master
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  github_token: $CI_TOKEN  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   local_dir: _site
   target_branch: gh-pages
